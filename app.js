@@ -10,12 +10,12 @@ socsjs.findCourse(quarter, query, timeout).then(function(result) {
 	for (var si in result.sections) {
 		s = result.sections[si];
 		if (s.isEnrollable && s.openSeats > 0) {
-			console.log("%s has %d open seat(s).", s.section, s.openSeats);
+			console.log("%s\t%s %s has %d open seat(s).", (new Date()).toString(), query, s.section, s.openSeats);
 			flag = false;
 		}
 	}
 	if (flag) {
-		console.log("No open seats for %s", query);
+		console.log("%s\tNo open seats for %s", (new Date()).toString(), query);
 	} else {
 		var nodemailer = require('nodemailer');
 
@@ -31,14 +31,14 @@ socsjs.findCourse(quarter, query, timeout).then(function(result) {
 			from: 'email@address.com',
 			to: 'email@address.com',
 			subject: '[URGENT] Open seats in ' + query,
-			text: 'Check WebReg for details.'
+			text: 'Check WebReg for details. Sent ' + (new Date()).toString()
 		};
 
 		transporter.sendMail(mailOptions, function(error, info) {
 			if (error) {
 				console.log(error);
 			} else {
-				console.log('open seats notification sent: %s', info.response);
+				console.log('%s\topen seats notification sent: %s', (new Date()).toString(), info.response);
 			}
 		});
 	}
